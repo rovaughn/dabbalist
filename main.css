@@ -1,3 +1,18 @@
 
+.verse .no {
+    float: left;
+    font-size: 12pt;
+    line-height: 18pt;
+    text-align: right;
+    width: 1em;
+}
 
+.verse p {
+    margin: 0 0 0 2em;
+    font-size: 12pt;
+    line-height: 18pt;
+}
+
+.verse {
+}
 

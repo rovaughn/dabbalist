@@ -93,8 +93,15 @@ func GetVerses(db *sql.DB, book int) ([]Verse, error) {
 	return verses, nil
 }
 
+// TODO: This isn't actually HTML safe.
+func FormatVerse(verse string) template.HTML {
+	return template.HTML(strings.Replace(verse, "\n", "<br>", -1))
+}
+
 func main() {
-	tmpl, err := template.ParseGlob("*.html")
+	tmpl, err := template.New("").Funcs(template.FuncMap{
+		"FormatVerse": FormatVerse,
+	}).ParseGlob("*.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -135,6 +142,11 @@ func main() {
 		}); err != nil {
 			InternalError("/book/ render", w, err)
 		}
+	})
+
+	http.HandleFunc("/main.css", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Here", r.URL.Path)
+		http.ServeFile(w, r, "main.css")
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
