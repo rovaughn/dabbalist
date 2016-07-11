@@ -145,7 +145,6 @@ func main() {
 	})
 
 	http.HandleFunc("/main.css", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Here", r.URL.Path)
 		http.ServeFile(w, r, "main.css")
 	})
 
