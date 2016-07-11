@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <h1>The Dabbalist</h1>
+        {{if .Book.Translator}}
+        <p>{{.Book.Title}} by {{.Book.Author}}, translation by {{.Book.Translator}}</p>
+        {{else}}
+        <p>{{.Book.Title}} by {{.Book.Author}}</p>
+        {{end}}
+        {{range .Verses}}
+        <p>{{.Verse}}</p>
+        {{end}}
+    </body>
+</html>
