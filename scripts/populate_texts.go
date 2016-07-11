@@ -48,10 +48,11 @@ func main() {
 		log.Println("Processing", filename, "...")
 
 		var book struct {
-			Title      string   `yaml:"book"`
-			Author     string   `yaml:"author"`
-			Translator string   `yaml:"translator"`
-			Verses     []string `yaml:"verses"`
+			Title       string   `yaml:"book"`
+			Author      string   `yaml:"author"`
+			Translator  string   `yaml:"translator"`
+			Verses      []string `yaml:"verses"`
+			VerseMargin bool     `yaml:"verse-margin"`
 		}
 
 		yaml_bytes, err := ioutil.ReadFile(filename)
@@ -68,13 +69,18 @@ func main() {
 		if err := db.QueryRow(`
 			INSERT INTO book (title, author, translator)
 			VALUES ($1, $2, $3)
-			ON CONFLICT DO NOTHING
+			ON CONFLICT ON CONSTRAINT book_title_author_translator_key
+			DO UPDATE SET title = EXCLUDED.title
 			RETURNING id;
 		`, book.Title, book.Author, book.Translator).Scan(&bookId); err != nil {
 			panic(err)
 		}
 
 		for no, verse := range book.Verses {
+			if book.VerseMargin {
+				verse += "\n"
+			}
+
 			if _, err := db.Exec(`
 				INSERT INTO verse (book, no, verse)
 				VALUES ($1, $2, $3)

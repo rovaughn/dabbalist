@@ -2,6 +2,7 @@
 book: Tao Te Ching
 author: Lao-tzu
 translator: Stephen Mitchell
+verse-margin: true
 verses:
     - |
         The tao that can be told
