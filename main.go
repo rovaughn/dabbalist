@@ -93,7 +93,7 @@ func GetVerses(db *sql.DB, book int) ([]Verse, error) {
 	return verses, nil
 }
 
-// TODO: This isn't actually HTML safe.
+// TODO: This isn't actually HTML safe because verse needs to be escaped.
 func FormatVerse(verse string) template.HTML {
 	return template.HTML(strings.Replace(verse, "\n", "<br>", -1))
 }
